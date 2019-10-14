@@ -1,28 +1,38 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<v-app>
+    <Navbar/>
+    <template v-if="error">
+        <v-snackbar :color="error" :multi-line="true" :timeout="5000" @input="closeError" :value="true">
+            {{ error }}
+            <v-btn dark text @click.native="closeError">
+                Close
+            </v-btn>
+        </v-snackbar>
+    </template>
+    <Footer />
+</v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    components: {
+        Navbar,
+        Footer
+    },
+    methods: {
+        closeError() {
+            this.$store.dispatch('clearError')
+        }
+    },
+    computed: {
+        error() {
+            return this.$store.getters.error
+        }
+    }
+};
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
